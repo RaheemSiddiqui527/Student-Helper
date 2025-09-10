@@ -15,7 +15,7 @@ import {
   Calendar,
   Bell
 } from "lucide-react";
-import Card from "./components/card";
+import Card from "./components/Card";
 import Link from "next/link";
 const statsData = [
   { 
