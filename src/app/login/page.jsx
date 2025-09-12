@@ -1,9 +1,22 @@
 "use client";
 import React, { useState } from "react";
-import { Brain, Mail, Lock, Eye, EyeOff, ArrowRight, CheckCircle, Shield, Sparkles, Star, Users } from "lucide-react";
+import {
+  Brain,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  CheckCircle,
+  Shield,
+  Sparkles,
+  Star,
+  Users,
+} from "lucide-react";
 import { FaGoogle, FaGithub, FaLinkedin } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,55 +24,123 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    rememberMe: false
+    rememberMe: false,
   });
   const [isLoading, setIsLoading] = useState(false);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.email || !formData.password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
 
     try {
       setIsLoading(true);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Step 1: Validate user credentials (simulate login validation)
+      // In a real app, you would validate against your user database here
+      console.log("Validating user credentials...");
+      
+      // For demo purposes, we'll assume validation is successful
+      // You can add your actual login validation logic here
+      
+      // Step 2: Send OTP to the user's email
+      console.log("Sending OTP to:", formData.email);
+      
+      const otpResponse = await fetch(`${API_URL}/api/auth/send-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: formData.email }),
+      });
 
-      alert("Login successful!");
-      router.push("/dashboard"); // ✅ now works
+      let otpData;
+      try {
+        otpData = await otpResponse.json();
+      } catch (error) {
+        console.error("Error parsing OTP response:", error);
+        throw new Error("Invalid server response");
+      }
+
+      if (!otpResponse.ok) {
+        throw new Error(otpData.message || "Failed to send OTP");
+      }
+
+      // Step 3: Store email for OTP verification page
+      localStorage.setItem("userEmail", formData.email);
+      localStorage.setItem("tempUserEmail", formData.email); // Backup storage
+      
+      // Show success message
+      toast.success("OTP sent to your email!");
+      
+      // Step 4: Redirect to OTP verification page after short delay
+      setTimeout(() => {
+        router.push("/verify-otp");
+      }, 1500);
 
     } catch (error) {
-      console.error("Login failed:", error);
-      alert("Something went wrong, please try again.");
+      console.error("Login process failed:", error);
+      
+      // Show specific error messages
+      if (error.message.includes("send OTP") || error.message.includes("Failed to send")) {
+        toast.error("Failed to send verification code. Please try again.");
+      } else if (error.message.includes("Invalid server response")) {
+        toast.error("Server error. Please try again later.");
+      } else {
+        toast.error("Login failed. Please check your credentials and try again.");
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-
-
   const features = [
     { icon: <Brain className="w-5 h-5" />, text: "AI-Powered Matching" },
     { icon: <Star className="w-5 h-5" />, text: "Personalized Results" },
     { icon: <Users className="w-5 h-5" />, text: "Expert Community" },
-    { icon: <Shield className="w-5 h-5" />, text: "Secure Platform" }
+    { icon: <Shield className="w-5 h-5" />, text: "Secure Platform" },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 relative overflow-hidden">
-      {/* Animated background elements */}
+      {/* Toast Provider */}
+      <Toaster position="top-center" reverseOrder={false} />
+
+      {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/3 left-1/3 w-60 h-60 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-15 animate-pulse" style={{ animationDelay: '4s' }}></div>
-        <div className="absolute top-20 right-20 w-40 h-40 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse" style={{ animationDelay: '3s' }}></div>
+        <div
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"
+          style={{ animationDelay: "2s" }}
+        ></div>
+        <div
+          className="absolute top-1/3 left-1/3 w-60 h-60 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-15 animate-pulse"
+          style={{ animationDelay: "4s" }}
+        ></div>
+        <div
+          className="absolute top-20 right-20 w-40 h-40 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse"
+          style={{ animationDelay: "3s" }}
+        ></div>
       </div>
 
       {/* Floating particles */}
@@ -72,7 +153,7 @@ const handleSubmit = async (e) => {
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${3 + Math.random() * 2}s`
+              animationDuration: `${3 + Math.random() * 2}s`,
             }}
           />
         ))}
@@ -80,22 +161,23 @@ const handleSubmit = async (e) => {
 
       <div className="relative z-10 min-h-screen flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-12 items-center">
-          
-          {/* Left Side - Brand & Welcome */}
+          {/* Left - Welcome */}
           <div className="text-center lg:text-left space-y-8">
-            {/* Brand Header */}
             <div className="space-y-6">
               <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-lg rounded-full border border-white/20">
                 <Brain className="w-5 h-5 text-blue-400" />
-                <span className="text-white/90 text-sm font-medium">Welcome Back!</span>
+                <span className="text-white/90 text-sm font-medium">
+                  Welcome Back!
+                </span>
               </div>
-              
+
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent leading-tight">
                 Sign In
               </h1>
-              
+
               <p className="text-xl text-white/80 max-w-2xl mx-auto lg:mx-0">
-                Continue your career journey and unlock new opportunities with personalized recommendations
+                Continue your career journey and unlock new opportunities with
+                personalized recommendations
               </p>
             </div>
 
@@ -116,39 +198,25 @@ const handleSubmit = async (e) => {
                 </div>
               ))}
             </div>
-
-            {/* Success Stats */}
-            <div className="flex justify-center lg:justify-start gap-8 text-center">
-              <div className="space-y-2">
-                <div className="text-3xl font-bold text-white">10K+</div>
-                <div className="text-white/70 text-sm">Happy Users</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-3xl font-bold text-white">500+</div>
-                <div className="text-white/70 text-sm">Career Options</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-3xl font-bold text-white">95%</div>
-                <div className="text-white/70 text-sm">Success Rate</div>
-              </div>
-            </div>
           </div>
 
-          {/* Right Side - Login Form */}
+          {/* Right - Login Form */}
           <div className="w-full max-w-md mx-auto">
             <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl">
-              
-              {/* Form Header */}
               <div className="text-center mb-8">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <Brain className="w-8 h-8 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-white mb-2">Welcome Back</h2>
-                <p className="text-white/70">Sign in to continue your career journey</p>
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  Welcome Back
+                </h2>
+                <p className="text-white/70">
+                  Sign in to continue your career journey
+                </p>
               </div>
 
-              <div className="space-y-6">
-                {/* Email Field */}
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Email */}
                 <div className="space-y-2">
                   <label className="text-white/90 text-sm font-medium flex items-center gap-2">
                     <Mail className="w-4 h-4" />
@@ -165,7 +233,7 @@ const handleSubmit = async (e) => {
                   />
                 </div>
 
-                {/* Password Field */}
+                {/* Password */}
                 <div className="space-y-2">
                   <label className="text-white/90 text-sm font-medium flex items-center gap-2">
                     <Lock className="w-4 h-4" />
@@ -186,56 +254,59 @@ const handleSubmit = async (e) => {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-white transition-colors duration-200"
                     >
-                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      {showPassword ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
                     </button>
                   </div>
                 </div>
 
-                {/* Remember Me & Forgot Password */}
+                {/* Remember me + Forgot */}
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-3 cursor-pointer group">
-                    <div className="relative">
-                      <input
-                        type="checkbox"
-                        name="rememberMe"
-                        checked={formData.rememberMe}
-                        onChange={handleInputChange}
-                        className="sr-only"
-                      />
-                      <div className={`w-5 h-5 rounded border-2 transition-all duration-300 ${
+                    <input
+                      type="checkbox"
+                      name="rememberMe"
+                      checked={formData.rememberMe}
+                      onChange={handleInputChange}
+                      className="sr-only"
+                    />
+                    <div
+                      className={`w-5 h-5 rounded border-2 transition-all duration-300 ${
                         formData.rememberMe
-                          ? 'bg-gradient-to-r from-blue-500 to-cyan-600 border-blue-400'
-                          : 'border-white/30 bg-white/5'
-                      }`}>
-                        {formData.rememberMe && (
-                          <CheckCircle className="w-3 h-3 text-white absolute top-0.5 left-0.5 transform scale-75" />
-                        )}
-                      </div>
+                          ? "bg-gradient-to-r from-blue-500 to-cyan-600 border-blue-400"
+                          : "border-white/30 bg-white/5"
+                      }`}
+                    >
+                      {formData.rememberMe && (
+                        <CheckCircle className="w-3 h-3 text-white absolute top-0.5 left-0.5 transform scale-75" />
+                      )}
                     </div>
                     <span className="text-white/70 text-sm group-hover:text-white transition-colors duration-300">
                       Remember me
                     </span>
                   </label>
-                  
-                 <Link
-  href="/forgot-password"
-  className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-300 hover:underline"
->
-  Forgot Password?
-</Link>
+
+                  <Link
+                    href="/forgot-password"
+                    className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-300 hover:underline"
+                  >
+                    Forgot Password?
+                  </Link>
                 </div>
 
-                {/* Submit Button */}
+                {/* Submit */}
                 <button
-                  type="button"
-                  onClick={handleSubmit}
+                  type="submit"
                   disabled={isLoading}
                   className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 group"
                 >
                   {isLoading ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      Signing In...
+                      Sending verification code...
                     </>
                   ) : (
                     <>
@@ -244,63 +315,53 @@ const handleSubmit = async (e) => {
                     </>
                   )}
                 </button>
+              </form>
 
-                {/* Divider */}
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-white/20"></div>
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 text-white/70">
-                      Or continue with
-                    </span>
-                  </div>
+              {/* Divider */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-white/20"></div>
                 </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 text-white/70">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
 
-                {/* Social Login */}
-                <div className="grid grid-cols-3 gap-4">
-  {/* Google */}
-  <button
-    type="button"
-    className="flex items-center justify-center gap-3 py-3 px-4 bg-white/5 border border-white/20 rounded-2xl text-white/90 hover:bg-white/10 hover:border-white/30 transition-all duration-300 group backdrop-blur-sm"
-  >
-    <FaGoogle className="text-red-500 w-5 h-5" />
-    <span className="font-medium group-hover:text-white">Google</span>
-  </button>
+              {/* Social Login */}
+              <div className="grid grid-cols-3 gap-4">
+                <button className="flex items-center justify-center gap-3 py-3 px-4 bg-white/5 border border-white/20 rounded-2xl text-white/90 hover:bg-white/10 hover:border-white/30 transition-all duration-300 group backdrop-blur-sm">
+                  <FaGoogle className="text-red-500 w-5 h-5" />
+                  <span className="font-medium group-hover:text-white">
+                    Google
+                  </span>
+                </button>
+                <button className="flex items-center justify-center gap-3 py-3 px-4 bg-white/5 border border-white/20 rounded-2xl text-white/90 hover:bg-white/10 hover:border-white/30 transition-all duration-300 group backdrop-blur-sm">
+                  <FaGithub className="text-gray-300 w-5 h-5" />
+                  <span className="font-medium group-hover:text-white">
+                    GitHub
+                  </span>
+                </button>
+                <button className="flex items-center justify-center gap-3 py-3 px-4 bg-white/5 border border-white/20 rounded-2xl text-white/90 hover:bg-white/10 hover:border-white/30 transition-all duration-300 group backdrop-blur-sm">
+                  <FaLinkedin className="text-blue-500 w-5 h-5" />
+                  <span className="font-medium group-hover:text-white">
+                    LinkedIn
+                  </span>
+                </button>
+              </div>
 
-  {/* GitHub */}
-  <button
-    type="button"
-    className="flex items-center justify-center gap-3 py-3 px-4 bg-white/5 border border-white/20 rounded-2xl text-white/90 hover:bg-white/10 hover:border-white/30 transition-all duration-300 group backdrop-blur-sm"
-  >
-    <FaGithub className="text-gray-300 w-5 h-5" />
-    <span className="font-medium group-hover:text-white">GitHub</span>
-  </button>
-
-  {/* LinkedIn */}
-  <button
-    type="button"
-    className="flex items-center justify-center gap-3 py-3 px-4 bg-white/5 border border-white/20 rounded-2xl text-white/90 hover:bg-white/10 hover:border-white/30 transition-all duration-300 group backdrop-blur-sm"
-  >
-    <FaLinkedin className="text-blue-500 w-5 h-5" />
-    <span className="font-medium group-hover:text-white">LinkedIn</span>
-  </button>
-</div>
-
-
-                {/* Switch to Signup */}
-                <div className="text-center mt-8">
-  <p className="text-white/70">
-    Don't have an account?{" "}
-    <Link
-      href="/signup"
-      className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200"
-    >
-      Sign up here
-    </Link>
-  </p>
-</div>
-
+              {/* Signup link */}
+              <div className="text-center mt-8">
+                <p className="text-white/70">
+                  Don&apos;t have an account?{" "}
+                  <Link
+                    href="/signup"
+                    className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200"
+                  >
+                    Sign up here
+                  </Link>
+                </p>
               </div>
             </div>
 
@@ -321,23 +382,30 @@ const handleSubmit = async (e) => {
       <div className="absolute top-20 left-10 animate-float">
         <Sparkles className="w-6 h-6 text-blue-400/30" />
       </div>
-      <div className="absolute bottom-32 right-16 animate-float" style={{ animationDelay: '2s' }}>
+      <div
+        className="absolute bottom-32 right-16 animate-float"
+        style={{ animationDelay: "2s" }}
+      >
         <Star className="w-5 h-5 text-purple-400/30" />
       </div>
-      <div className="absolute top-1/2 right-10 animate-float" style={{ animationDelay: '4s' }}>
+      <div
+        className="absolute top-1/2 right-10 animate-float"
+        style={{ animationDelay: "4s" }}
+      >
         <Brain className="w-7 h-7 text-cyan-400/30" />
       </div>
 
       <style jsx>{`
         @keyframes float {
-          0%, 100% {
+          0%,
+          100% {
             transform: translateY(0px);
           }
           50% {
             transform: translateY(-20px);
           }
         }
-        
+
         .animate-float {
           animation: float 6s ease-in-out infinite;
         }

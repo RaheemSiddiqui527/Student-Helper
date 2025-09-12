@@ -14,7 +14,7 @@ const WebsiteChatbot = () => {
     {
       id: 1,
       type: "bot",
-      text: "👋 Hello! Welcome to our Educational Platform!\n\nI'm your personal assistant and I can help you with:\n\n🎯 **Career Guidance** - Find perfect careers based on your skills\n🏛️ **College Selection** - Compare colleges and find the best fit\n💰 **Salary Insights** - Get detailed salary information\n📚 **Educational Pathways** - Understand course requirements\n🚀 **Skill Development** - Learn what skills you need\n\nWhat would you like to explore today?",
+      text: "Hello! Welcome to our Educational Platform!\n\nI'm your personal assistant and I can help you with:\n\n🎯 **Career Guidance** - Find perfect careers based on your skills\n🏛️ **College Selection** - Compare colleges and find the best fit\n💰 **Salary Insights** - Get detailed salary information\n📚 **Educational Pathways** - Understand course requirements\n🚀 **Skill Development** - Learn what skills you need\n\nWhat would you like to explore today?",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       suggestions: ["Find careers for me", "Compare colleges", "Salary information", "Skill guidance", "How to use website"]
     }
@@ -88,7 +88,7 @@ const WebsiteChatbot = () => {
     // Website navigation and help
     if (input.includes("how to use") || input.includes("help") || input.includes("guide")) {
       return {
-        text: "🔍 **How to Use Our Platform:**\n\n**Career Matcher:**\n• Select your skills and interests\n• Browse personalized career recommendations\n• Compare salaries and growth potential\n• Save careers you like\n\n**College Comparison:**\n• Search for colleges by name/location\n• Compare up to 5 colleges at once\n• Check fees, placements, and facilities\n• Save colleges to favorites\n\n**Tips:**\n✅ Use filters to narrow down results\n✅ Save items for later comparison\n✅ Check both career and college info together\n\nWhat specific feature would you like help with?",
+        text: "📋 **How to Use Our Platform:**\n\n**Career Matcher:**\n• Select your skills and interests\n• Browse personalized career recommendations\n• Compare salaries and growth potential\n• Save careers you like\n\n**College Comparison:**\n• Search for colleges by name/location\n• Compare up to 5 colleges at once\n• Check fees, placements, and facilities\n• Save colleges to favorites\n\n**Tips:**\n✅ Use filters to narrow down results\n✅ Save items for later comparison\n✅ Check both career and college info together\n\nWhat specific feature would you like help with?",
         suggestions: ["Career Matcher guide", "College Comparison help", "Search tips", "Filtering options"]
       };
     }
@@ -100,13 +100,6 @@ const WebsiteChatbot = () => {
       };
     }
 
-    if (input.includes("college comparison") || input.includes("compare college") || input.includes("find college")) {
-      return {
-        text: "🏛️ **College Comparison Tool:**\n\n**What it includes:**\n• 500+ colleges across India\n• Detailed course and fee information\n• Placement records and statistics\n• Scholarship opportunities\n• Campus facilities and location info\n\n**How to compare:**\n1. Search colleges by name or location\n2. Select up to 5 colleges\n3. View side-by-side comparison\n4. Check courses, fees, and placements\n5. Save colleges to favorites\n\n**Filter Options:**\n🔍 By location (city, state)\n🔍 By course type (Engineering, Medical, etc.)\n🔍 By fees range\n🔍 By placement records\n\nWhich type of colleges are you looking for?",
-        suggestions: ["Engineering colleges", "Management colleges", "Medical colleges", "Design colleges", "College fees info"]
-      };
-    }
-
     // Specific career queries
     for (const [career, data] of Object.entries(careerData)) {
       if (input.includes(career.replace(" ", "")) || input.includes(career)) {
@@ -115,21 +108,6 @@ const WebsiteChatbot = () => {
           suggestions: ["Career roadmap", "Skill development plan", "College options", "Interview preparation"]
         };
       }
-    }
-
-    // College-specific queries
-    if (input.includes("engineering college")) {
-      return {
-        text: "🔧 **Top Engineering Colleges in India:**\n\n**Tier 1 (Premier):**\n• IIT Delhi, Bombay, Madras\n• BITS Pilani\n• NIT Trichy, Warangal\n\n**Tier 2 (Excellent):**\n• VIT Vellore\n• SRM Chennai\n• Manipal Institute\n• APSIT Thane\n\n**Key Factors to Consider:**\n✅ NIRF Rankings\n✅ Placement records\n✅ Faculty quality\n✅ Infrastructure\n✅ Industry connections\n\n**Popular Branches:**\n• Computer Science & Engineering\n• Information Technology\n• Electronics & Communication\n• Mechanical Engineering\n\nWant to compare specific colleges?",
-        suggestions: ["Compare top engineering colleges", "CSE colleges", "Placement records", "College fees"]
-      };
-    }
-
-    if (input.includes("management college") || input.includes("mba college")) {
-      return {
-        text: "📊 **Top Management Colleges (MBA):**\n\n**Tier 1 (Elite):**\n• IIM Ahmedabad, Bombay, Calcutta\n• XLRI Jamshedpur\n• FMS Delhi\n• SPJIMR Mumbai\n\n**Tier 2 (Excellent):**\n• IIM Lucknow, Kozhikode\n• MDI Gurgaon\n• IIFT Delhi\n• NMIMS Mumbai\n\n**Admission Process:**\n📝 CAT/XAT/GMAT scores\n📝 Academic performance\n📝 Work experience\n📝 Personal interviews\n\n**Specializations:**\n• Finance & Banking\n• Marketing & Sales\n• Operations & Supply Chain\n• HR & Organizational Behavior\n• Consulting & Strategy\n\nNeed help choosing the right MBA program?",
-        suggestions: ["MBA admission process", "Specialization guide", "CAT preparation", "College comparison"]
-      };
     }
 
     // Salary and financial queries
@@ -148,14 +126,6 @@ const WebsiteChatbot = () => {
       };
     }
 
-    // Trending and market insights
-    if (input.includes("trending") || input.includes("hot") || input.includes("popular") || input.includes("future")) {
-      return {
-        text: "🔥 **Trending Careers & Market Insights 2024:**\n\n**🚀 Fastest Growing Careers:**\n• AI/ML Engineer (40% growth)\n• Cybersecurity Analyst (35% growth)\n• Data Scientist (30% growth)\n• Cloud Architect (28% growth)\n• Product Manager (25% growth)\n\n**💡 Emerging Fields:**\n• Blockchain Developer\n• DevOps Engineer\n• UX Researcher\n• Digital Marketing Specialist\n• Sustainability Consultant\n\n**🏛️ Trending College Programs:**\n• Computer Science & AI\n• Data Science & Analytics\n• Digital Marketing\n• Product Design\n• Entrepreneurship\n\n**Market Predictions:**\n📈 Remote work will continue growing\n📈 Tech skills premium will increase\n📈 Interdisciplinary skills in high demand\n\nInterested in any specific trend?",
-        suggestions: ["AI career path", "Remote work trends", "Future skills", "Emerging colleges"]
-      };
-    }
-
     // Default helpful responses
     const defaultResponses = [
       {
@@ -163,7 +133,7 @@ const WebsiteChatbot = () => {
         suggestions: ["Find my ideal career", "Compare colleges", "Salary insights", "Platform tutorial"]
       },
       {
-        text: "Great question! Let me help you make informed decisions about your future! 🌟\n\n**Popular Queries I Can Help With:**\n\n🔍 **Career Exploration:**\n\"Show me tech careers\"\n\"High salary jobs\"\n\"Remote work options\"\n\"Entry level positions\"\n\n🔍 **College Research:**\n\"Best engineering colleges\"\n\"MBA college comparison\"\n\"College fees information\"\n\"Scholarship opportunities\"\n\n🔍 **Skill Development:**\n\"What skills do I need?\"\n\"Learning roadmap\"\n\"Certification courses\"\n\nFeel free to ask me anything!",
+        text: "Let me help you make informed decisions about your future! 🌟\n\n**Popular Queries I Can Help With:**\n\n🔍 **Career Exploration:**\n\"Show me tech careers\"\n\"High salary jobs\"\n\"Remote work options\"\n\"Entry level positions\"\n\n🔍 **College Research:**\n\"Best engineering colleges\"\n\"MBA college comparison\"\n\"College fees information\"\n\"Scholarship opportunities\"\n\n🔍 **Skill Development:**\n\"What skills do I need?\"\n\"Learning roadmap\"\n\"Certification courses\"\n\nFeel free to ask me anything!",
         suggestions: ["Career recommendations", "College guidance", "Skill planning", "Market insights"]
       }
     ];
@@ -202,11 +172,6 @@ const WebsiteChatbot = () => {
     }, 1500 + Math.random() * 1000);
   };
 
-  const handleQuickResponse = (responseText) => {
-    setInputText(responseText);
-    setTimeout(() => handleSendMessage(), 100);
-  };
-
   const handleSuggestionClick = (suggestion) => {
     setInputText(suggestion);
     setTimeout(() => handleSendMessage(), 100);
@@ -232,18 +197,18 @@ const WebsiteChatbot = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-4 right-4 z-50">
       {/* Floating Chat Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-16 h-16 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 flex items-center justify-center group ${
+        className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 flex items-center justify-center group ${
           isOpen ? 'scale-0' : 'scale-100 hover:scale-110'
         }`}
       >
-        <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
+        <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform duration-300" />
         
         {/* Notification dot */}
-        <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+        <div className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-red-500 rounded-full flex items-center justify-center">
           <span className="text-white text-xs font-bold">!</span>
         </div>
         
@@ -252,37 +217,37 @@ const WebsiteChatbot = () => {
       </button>
 
       {/* Chat Window */}
-      <div className={`absolute bottom-0 right-0 w-96 h-[700px] bg-gradient-to-br from-slate-900/95 via-indigo-900/95 to-slate-900/95 backdrop-blur-lg rounded-3xl border border-white/20 shadow-2xl transition-all duration-500 ${
+      <div className={`absolute bottom-0 right-0 w-[90vw] max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl h-[70vh] sm:h-[600px] lg:h-[700px] bg-gradient-to-br from-slate-900/95 via-indigo-900/95 to-slate-900/95 backdrop-blur-lg rounded-2xl sm:rounded-3xl border border-white/20 shadow-2xl transition-all duration-500 ${
         isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
       }`}>
         
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-white/20 bg-gradient-to-r from-blue-600/10 to-purple-600/10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center relative">
-              <Brain className="w-5 h-5 text-white" />
+        <div className="flex items-center justify-between p-3 sm:p-4 border-b border-white/20 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-t-2xl sm:rounded-t-3xl">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center relative">
+              <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               {/* Online indicator */}
-              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+              <div className="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full border-2 border-white"></div>
             </div>
             <div>
-              <h3 className="text-white font-bold">EduBot Assistant</h3>
+              <h3 className="text-white font-bold text-sm sm:text-base">EduBot Assistant</h3>
               <p className="text-green-400 text-xs flex items-center gap-1">
-                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-pulse"></span>
                 Online • Ready to help
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <button
               onClick={clearChat}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors duration-200"
+              className="p-1.5 sm:p-2 hover:bg-white/10 rounded-lg transition-colors duration-200"
               title="Clear chat"
             >
               <Sparkles className="w-4 h-4 text-white/60 hover:text-white" />
             </button>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors duration-200"
+              className="p-1.5 sm:p-2 hover:bg-white/10 rounded-lg transition-colors duration-200"
             >
               <X className="w-4 h-4 text-white/60 hover:text-white" />
             </button>
@@ -290,35 +255,35 @@ const WebsiteChatbot = () => {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[480px]">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4" style={{ height: 'calc(100% - 140px)' }}>
           {messages.map((message) => (
             <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[85%] rounded-2xl p-3 ${
+              <div className={`max-w-[85%] sm:max-w-[80%] rounded-2xl p-2.5 sm:p-3 ${
                 message.type === 'user'
                   ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                   : 'bg-white/10 border border-white/20 text-white backdrop-blur-sm'
               }`}>
                 <div className="flex items-start gap-2 mb-1">
                   {message.type === 'bot' && (
-                    <Brain className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <Brain className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400 mt-0.5 flex-shrink-0" />
                   )}
                   {message.type === 'user' && (
-                    <User className="w-4 h-4 text-white/80 mt-0.5 flex-shrink-0" />
+                    <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/80 mt-0.5 flex-shrink-0" />
                   )}
-                  <div className="flex-1">
-                    <p className="text-sm whitespace-pre-line leading-relaxed">{message.text}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm whitespace-pre-line leading-relaxed break-words">{message.text}</p>
                     <p className="text-xs text-white/50 mt-1">{message.timestamp}</p>
                   </div>
                 </div>
                 
                 {/* Suggestions */}
                 {message.suggestions && message.suggestions.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="mt-2 sm:mt-3 flex flex-wrap gap-1.5 sm:gap-2">
                     {message.suggestions.map((suggestion, index) => (
                       <button
                         key={index}
                         onClick={() => handleSuggestionClick(suggestion)}
-                        className="px-3 py-1 bg-white/20 hover:bg-white/30 rounded-full text-xs text-white transition-all duration-200 hover:scale-105 border border-white/30"
+                        className="px-2.5 py-1 bg-white/20 hover:bg-white/30 rounded-full text-xs text-white transition-all duration-200 hover:scale-105 border border-white/30"
                       >
                         {suggestion}
                       </button>
@@ -332,13 +297,13 @@ const WebsiteChatbot = () => {
           {/* Typing Indicator */}
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-white/10 border border-white/20 rounded-2xl p-3 backdrop-blur-sm">
+              <div className="bg-white/10 border border-white/20 rounded-2xl p-2.5 sm:p-3 backdrop-blur-sm">
                 <div className="flex items-center gap-2">
-                  <Brain className="w-4 h-4 text-blue-400" />
+                  <Brain className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400" />
                   <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-400 rounded-full animate-bounce"></div>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                   </div>
                   <span className="text-white/60 text-xs">EduBot is thinking...</span>
                 </div>
@@ -350,32 +315,32 @@ const WebsiteChatbot = () => {
 
         {/* Quick Actions */}
         {messages.length <= 2 && (
-          <div className="px-4 pb-2">
+          <div className="px-3 sm:px-4 pb-2">
             <p className="text-white/60 text-xs mb-2">🚀 Quick Actions:</p>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <button
-                onClick={() => handleQuickResponse("Find careers for me")}
+                onClick={() => handleSuggestionClick("Find careers for me")}
                 className="p-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 hover:from-blue-500/30 hover:to-cyan-500/30 border border-blue-500/30 rounded-xl text-xs text-white transition-all duration-200 hover:scale-105 flex items-center gap-2"
               >
                 <Target className="w-3 h-3" />
                 Find Careers
               </button>
               <button
-                onClick={() => handleQuickResponse("Compare colleges")}
+                onClick={() => handleSuggestionClick("Compare colleges")}
                 className="p-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30 border border-purple-500/30 rounded-xl text-xs text-white transition-all duration-200 hover:scale-105 flex items-center gap-2"
               >
                 <GraduationCap className="w-3 h-3" />
                 Compare Colleges
               </button>
               <button
-                onClick={() => handleQuickResponse("Salary information")}
+                onClick={() => handleSuggestionClick("Salary information")}
                 className="p-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 hover:from-green-500/30 hover:to-emerald-500/30 border border-green-500/30 rounded-xl text-xs text-white transition-all duration-200 hover:scale-105 flex items-center gap-2"
               >
                 <DollarSign className="w-3 h-3" />
                 Salary Info
               </button>
               <button
-                onClick={() => handleQuickResponse("How to use website")}
+                onClick={() => handleSuggestionClick("How to use website")}
                 className="p-2 bg-gradient-to-r from-orange-500/20 to-red-500/20 hover:from-orange-500/30 hover:to-red-500/30 border border-orange-500/30 rounded-xl text-xs text-white transition-all duration-200 hover:scale-105 flex items-center gap-2"
               >
                 <BookOpen className="w-3 h-3" />
@@ -386,21 +351,24 @@ const WebsiteChatbot = () => {
         )}
 
         {/* Input Area */}
-        <div className="p-4 border-t border-white/20">
-          <div className="flex gap-2">
+        <div className="p-3 sm:p-4 border-t border-white/20 bg-white/5">
+          <div className="flex gap-2 items-end">
             <textarea
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Ask me about careers, colleges, skills..."
-              className="flex-1 bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-white text-sm placeholder-white/60 focus:outline-none focus:border-white/40 focus:bg-white/15 resize-none backdrop-blur-sm"
+              className="flex-1 bg-white/10 border border-white/20 rounded-xl px-3 py-2.5 text-white text-sm placeholder-white/60 focus:outline-none focus:border-white/40 focus:bg-white/15 resize-none backdrop-blur-sm min-h-[40px] max-h-20 leading-tight"
               rows={1}
-              style={{ maxHeight: '80px' }}
+              style={{ 
+                height: 'auto',
+                minHeight: '40px'
+              }}
             />
             <button
               onClick={handleSendMessage}
               disabled={inputText.trim() === "" || isTyping}
-              className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-105"
+              className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-105 flex-shrink-0"
             >
               <Send className="w-4 h-4 text-white" />
             </button>
@@ -408,7 +376,7 @@ const WebsiteChatbot = () => {
         </div>
 
         {/* Powered by indicator */}
-        <div className="px-4 pb-2">
+        <div className="px-3 sm:px-4 py-1">
           <p className="text-white/40 text-xs text-center flex items-center justify-center gap-1">
             <Sparkles className="w-3 h-3" />
             Powered by AI • EduBot v2.0
